@@ -91,7 +91,6 @@
 				AEC0FBFB89A427DFEFE79F1C /* Pods-CameraFilter.debug.xcconfig */,
 				8DCBB2CF1941179553FD4865 /* Pods-CameraFilter.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
