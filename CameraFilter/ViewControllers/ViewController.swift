@@ -11,6 +11,7 @@ import RxSwift
 class ViewController: UIViewController {
   // MARK: - Outlets
   @IBOutlet weak var photoImageView: UIImageView!
+  @IBOutlet weak var applyFilterButton: UIButton!
   
   // MARK: - Properties
   private let disposeBag = DisposeBag()
@@ -29,8 +30,27 @@ class ViewController: UIViewController {
     else { fatalError("Segue destination is not found") }
     
     photosCollectionViewController.selectedPhoto.subscribe(onNext: { [weak self] photo in
-      self?.photoImageView.image = photo
+      DispatchQueue.main.async {
+        self?.updateUI(with: photo)
+      }
     }).disposed(by: disposeBag)
+  }
+  
+  
+  // MARK: - Private Funcs
+  private func updateUI(with image: UIImage) {
+    self.photoImageView.image = image
+    self.applyFilterButton.isHidden = false
+  }
+  
+  // MARK: - Actions
+  @IBAction func applyFilterButtonPressed() {
+    guard let sourceImage = self.photoImageView.image else { return }
+    FilterService().applyFilter(to: sourceImage) { [weak self] filteredImage in
+      DispatchQueue.main.async {
+        self?.photoImageView.image = filteredImage
+      }
+    }
   }
 }
 
